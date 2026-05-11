@@ -86,7 +86,7 @@ export function Workspace({ entriesCount, onSaved }: Props) {
   }
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[1.05fr_1fr]">
+    <div className="grid gap-5 xl:grid-cols-[1.05fr_1fr]">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
