@@ -14,6 +14,7 @@ export interface Analysis {
   observationAngle: string;
   insightTags: string[];
   postBreakdown: string;
+  contributedSkillId: string;
 }
 
 export interface JournalEntry {
@@ -24,6 +25,17 @@ export interface JournalEntry {
   content?: string;
   observation: string;
   analysis: Analysis;
+}
+
+export interface BoardPost {
+  id: string;
+  skillId: string;
+  author: string;
+  authorType: CompanionType;
+  isMe?: boolean;
+  createdAt: number;
+  text: string;
+  replies: number;
 }
 
 export type ViewKey = "workspace" | "journal" | "community";
