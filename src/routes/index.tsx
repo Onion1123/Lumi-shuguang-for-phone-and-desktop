@@ -12,6 +12,7 @@ import { BottomNav } from "@/components/lumi/BottomNav";
 import { PetDock } from "@/components/lumi/PetDock";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,7 +35,15 @@ export const Route = createFileRoute("/")({
 });
 
 function LumiApp() {
-  const { companion, entries, setCompanion, addEntry, reset } = useLumi();
+  const {
+    companion,
+    entries,
+    myBoardPosts,
+    setCompanion,
+    addEntry,
+    addBoardPost,
+    reset,
+  } = useLumi();
   const [view, setView] = useState<ViewKey>("workspace");
   const [pulseKey, setPulseKey] = useState<number | undefined>(undefined);
   const [lastUnlock, setLastUnlock] = useState<string | null>(null);
@@ -49,8 +58,8 @@ function LumiApp() {
   }
 
   return (
-    <div className="min-h-[100dvh] pb-28">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-5 pb-4 pt-6 md:pt-10">
+    <div className="min-h-[100dvh] pb-28 lg:pb-8">
+      <header className="mx-auto flex max-w-[1400px] items-center justify-between px-5 pb-4 pt-6 md:pt-8">
         <div className="flex items-center gap-2">
           <div className="grid size-8 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
             <span className="font-display text-lg font-semibold leading-none">
@@ -76,16 +85,29 @@ function LumiApp() {
         </Button>
       </header>
 
-      <main className="mx-auto max-w-6xl px-5">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={view}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+      <main className="mx-auto max-w-[1400px] px-5">
+        {/* Desktop: 3 columns. Mobile: single column based on tab */}
+        <div className="lg:grid lg:grid-cols-[300px_minmax(0,1fr)_340px] lg:gap-6">
+          {/* Left — Journal */}
+          <aside
+            className={cn(
+              "lg:block lg:border-r lg:border-border/60 lg:pr-6",
+              view === "journal" ? "block" : "hidden",
+            )}
           >
-            {view === "workspace" && (
+            <ColumnContent activeKey="journal" view={view}>
+              <Journal entries={entries} />
+            </ColumnContent>
+          </aside>
+
+          {/* Center — Workspace (primary) */}
+          <section
+            className={cn(
+              "lg:block",
+              view === "workspace" ? "block" : "hidden",
+            )}
+          >
+            <ColumnContent activeKey="workspace" view={view}>
               <Workspace
                 entriesCount={entries.length}
                 onSaved={(entry, newSkill) => {
@@ -94,15 +116,26 @@ function LumiApp() {
                   setLastUnlock(newSkill);
                 }}
               />
+            </ColumnContent>
+          </section>
+
+          {/* Right — Community */}
+          <aside
+            className={cn(
+              "lg:block lg:border-l lg:border-border/60 lg:pl-6",
+              view === "community" ? "block" : "hidden",
             )}
-            {view === "journal" && (
-              <Journal companion={companion} entries={entries} />
-            )}
-            {view === "community" && (
-              <Community companion={companion} myCount={entries.length} />
-            )}
-          </motion.div>
-        </AnimatePresence>
+          >
+            <ColumnContent activeKey="community" view={view}>
+              <Community
+                companion={companion}
+                entries={entries}
+                myBoardPosts={myBoardPosts}
+                onPost={addBoardPost}
+              />
+            </ColumnContent>
+          </aside>
+        </div>
       </main>
 
       <PetDock
@@ -111,8 +144,39 @@ function LumiApp() {
         pulseKey={pulseKey}
         lastSkillUnlock={lastUnlock}
       />
-      <BottomNav view={view} onChange={setView} />
+      <div className="lg:hidden">
+        <BottomNav view={view} onChange={setView} />
+      </div>
       <Toaster position="top-center" />
     </div>
+  );
+}
+
+// Animate column changes only on mobile (when view actually swaps)
+function ColumnContent({
+  children,
+  activeKey,
+  view,
+}: {
+  children: React.ReactNode;
+  activeKey: ViewKey;
+  view: ViewKey;
+}) {
+  return (
+    <AnimatePresence mode="wait">
+      {view === activeKey || typeof window === "undefined" ? (
+        <motion.div
+          key={activeKey}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
+          {children}
+        </motion.div>
+      ) : (
+        <div>{children}</div>
+      )}
+    </AnimatePresence>
   );
 }

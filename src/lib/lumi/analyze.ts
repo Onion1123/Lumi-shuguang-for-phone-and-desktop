@@ -80,13 +80,26 @@ export function mockAnalyze(input: AnalyzeInput): Analysis {
 
   const summary = `A ${ct.toLowerCase()} note that uses ${angle.toLowerCase()} to land. Combined with your read — "${truncate(input.observation, 50)}" — Lumi sees a clear pattern of ${tags[0]?.toLowerCase() || "personal voice"}.`;
 
+  const contributedSkillId = inferSkill(ct, angle, tags);
+
   return {
     summary,
     contentType: ct,
     observationAngle: angle,
     insightTags: tags,
     postBreakdown,
+    contributedSkillId,
   };
+}
+
+function inferSkill(ct: string, angle: string, tags: string[]): string {
+  const blob = (ct + " " + angle + " " + tags.join(" ")).toLowerCase();
+  if (/comment|save-rate|hook|template/.test(blob)) return "comment-hunter";
+  if (/emotion|healing|vulnerab|resonance/.test(blob)) return "emotion-catcher";
+  if (/product|review|conversion|commercial|budget/.test(blob))
+    return "commercial-instinct";
+  if (/trend|niche|micro|aesthetic|anti-/.test(blob)) return "trend-radar";
+  return "comment-hunter";
 }
 
 function truncate(s: string, n: number) {

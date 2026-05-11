@@ -1,22 +1,28 @@
 import { useEffect, useState, useCallback } from "react";
-import type { Companion, JournalEntry } from "./types";
+import type { BoardPost, Companion, JournalEntry } from "./types";
 import { unlockedFromCount } from "./analyze";
 
-const KEY = "lumi-state-v1";
+const KEY = "lumi-state-v2";
 
 interface LumiState {
   companion: Companion | null;
   entries: JournalEntry[];
+  myBoardPosts: BoardPost[];
 }
 
-const initial: LumiState = { companion: null, entries: [] };
+const initial: LumiState = { companion: null, entries: [], myBoardPosts: [] };
 
 function load(): LumiState {
   if (typeof window === "undefined") return initial;
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return initial;
-    return JSON.parse(raw) as LumiState;
+    const parsed = JSON.parse(raw) as Partial<LumiState>;
+    return {
+      companion: parsed.companion ?? null,
+      entries: parsed.entries ?? [],
+      myBoardPosts: parsed.myBoardPosts ?? [],
+    };
   } catch {
     return initial;
   }
@@ -31,7 +37,6 @@ function save(s: LumiState) {
   }
 }
 
-// Simple shared store with subscribe pattern
 let state: LumiState = initial;
 let hydrated = false;
 const listeners = new Set<() => void>();
@@ -73,15 +78,21 @@ export function useLumi() {
     });
   }, []);
 
+  const addBoardPost = useCallback((post: BoardPost) => {
+    setState((s) => ({ ...s, myBoardPosts: [post, ...s.myBoardPosts] }));
+  }, []);
+
   const reset = useCallback(() => {
-    setState(() => ({ companion: null, entries: [] }));
+    setState(() => ({ companion: null, entries: [], myBoardPosts: [] }));
   }, []);
 
   return {
     companion: state.companion,
     entries: state.entries,
+    myBoardPosts: state.myBoardPosts,
     setCompanion,
     addEntry,
+    addBoardPost,
     reset,
   };
 }
