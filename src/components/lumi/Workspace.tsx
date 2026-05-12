@@ -7,7 +7,7 @@ import { Sparkles, Wand2, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Analysis, JournalEntry } from "@/lib/lumi/types";
 import { mockAnalyze, SKILLS, unlockedFromCount } from "@/lib/lumi/analyze";
-import { pickRandomSample } from "@/lib/lumi/samples";
+import { pickRandomSample, samplePosts } from "@/lib/lumi/samples";
 import { AnalysisPanel } from "./AnalysisPanel";
 
 interface Props {
@@ -40,8 +40,9 @@ export function Workspace({ entriesCount, onSaved }: Props) {
     setLink(s.link);
     setTitle(s.title);
     setContent(s.content);
-    toast.success("Sample loaded", {
-      description: "Add your own one-sentence read below.",
+    setObservation(s.observation);
+    toast.success("Sample template loaded", {
+      description: "Click Analyze with Lumi to see the read.",
     });
   }
 
@@ -53,7 +54,15 @@ export function Workspace({ entriesCount, onSaved }: Props) {
       setStage(STAGES[i]);
       await wait(420 + Math.random() * 280);
     }
-    const result = mockAnalyze({ link, title, content, observation });
+    const matched = samplePosts.find(
+      (s) =>
+        s.title === title.trim() &&
+        s.content === content.trim() &&
+        s.observation === observation.trim(),
+    );
+    const result = matched
+      ? matched.analysis
+      : mockAnalyze({ link, title, content, observation });
     setAnalysis(result);
     setSavedObservation(observation);
     setLoading(false);
@@ -108,7 +117,7 @@ export function Workspace({ entriesCount, onSaved }: Props) {
             onClick={loadSample}
             className="gap-1.5 rounded-full border-dashed text-xs"
           >
-            <Wand2 className="size-3.5" /> Try sample
+            <Wand2 className="size-3.5" /> Try sample template
           </Button>
         </div>
 
