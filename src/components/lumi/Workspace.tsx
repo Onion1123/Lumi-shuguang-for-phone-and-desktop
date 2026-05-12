@@ -40,8 +40,9 @@ export function Workspace({ entriesCount, onSaved }: Props) {
     setLink(s.link);
     setTitle(s.title);
     setContent(s.content);
-    toast.success("Sample loaded", {
-      description: "Add your own one-sentence read below.",
+    setObservation(s.observation);
+    toast.success("Sample template loaded", {
+      description: "Click Analyze with Lumi to see the read.",
     });
   }
 
@@ -53,7 +54,15 @@ export function Workspace({ entriesCount, onSaved }: Props) {
       setStage(STAGES[i]);
       await wait(420 + Math.random() * 280);
     }
-    const result = mockAnalyze({ link, title, content, observation });
+    const matched = samplePosts.find(
+      (s) =>
+        s.title === title.trim() &&
+        s.content === content.trim() &&
+        s.observation === observation.trim(),
+    );
+    const result = matched
+      ? matched.analysis
+      : mockAnalyze({ link, title, content, observation });
     setAnalysis(result);
     setSavedObservation(observation);
     setLoading(false);
