@@ -59,7 +59,7 @@ function LumiApp() {
 
   return (
     <div className="min-h-[100dvh] pb-28 lg:pb-8">
-      <header className="mx-auto flex max-w-[1400px] items-center justify-between px-5 pb-4 pt-6 md:pt-8">
+      <header className="mx-auto flex w-full items-center justify-between px-6 pb-4 pt-6 md:pt-8">
         <div className="flex items-center gap-2">
           <div className="grid size-8 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
             <span className="font-display text-lg font-semibold leading-none">
@@ -85,9 +85,9 @@ function LumiApp() {
         </Button>
       </header>
 
-      <main className="mx-auto max-w-[1400px] px-5">
+      <main className="mx-auto w-full px-6">
         {/* Desktop: 3 columns. Mobile: single column based on tab */}
-        <div className="lg:grid lg:grid-cols-[300px_minmax(0,1fr)_340px] lg:gap-6">
+        <div className="lg:grid lg:grid-cols-[1fr_minmax(500px,2fr)_1.5fr] lg:gap-6">
           {/* Left — Journal */}
           <aside
             className={cn(
