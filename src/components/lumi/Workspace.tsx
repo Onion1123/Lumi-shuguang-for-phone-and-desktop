@@ -117,7 +117,7 @@ export function Workspace({ entriesCount, onSaved }: Props) {
             onClick={loadSample}
             className="gap-1.5 rounded-full border-dashed text-xs"
           >
-            <Wand2 className="size-3.5" /> Try sample
+            <Wand2 className="size-3.5" /> Try sample template
           </Button>
         </div>
 
