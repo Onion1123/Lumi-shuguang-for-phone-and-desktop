@@ -7,7 +7,7 @@ import { Sparkles, Wand2, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Analysis, JournalEntry } from "@/lib/lumi/types";
 import { mockAnalyze, SKILLS, unlockedFromCount } from "@/lib/lumi/analyze";
-import { pickRandomSample } from "@/lib/lumi/samples";
+import { pickRandomSample, samplePosts } from "@/lib/lumi/samples";
 import { AnalysisPanel } from "./AnalysisPanel";
 
 interface Props {
