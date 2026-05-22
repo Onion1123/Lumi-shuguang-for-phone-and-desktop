@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
-import type { Analysis } from "@/lib/lumi/types";
+import type { Analysis, CompanionStyle } from "@/lib/lumi/types";
 import { Sparkles, ScanLine } from "lucide-react";
 import { getLens, SKILLS, XP_PER_ENTRY } from "@/lib/lumi/analyze";
+import { getCopy } from "@/lib/lumi/copy";
 
 interface Props {
   loading?: boolean;
   loadingStage?: string;
   analysis?: Analysis | null;
   observation?: string;
+  style?: CompanionStyle;
 }
 
 export function AnalysisPanel({
@@ -15,7 +17,9 @@ export function AnalysisPanel({
   loadingStage,
   analysis,
   observation,
+  style,
 }: Props) {
+  const copy = getCopy(style);
   if (loading) {
     return (
       <div className="flex h-full min-h-[420px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-surface/60 p-8 text-center">
