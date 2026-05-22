@@ -232,6 +232,7 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
         loadingStage={stage}
         analysis={analysis}
         observation={savedObservation}
+        style={style}
       />
     </div>
   );
