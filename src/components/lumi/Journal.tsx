@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import type { JournalEntry } from "@/lib/lumi/types";
 import { SKILLS, getLens } from "@/lib/lumi/analyze";
 import { NotebookText, Sparkles, ScanLine } from "lucide-react";
+import { PatternCard } from "./PatternCard";
 
 export function Journal({ entries }: { entries: JournalEntry[] }) {
   return (
