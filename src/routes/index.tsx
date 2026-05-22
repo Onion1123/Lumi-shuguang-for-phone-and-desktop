@@ -96,7 +96,7 @@ function LumiApp() {
             )}
           >
             <ColumnContent activeKey="journal" view={view}>
-              <Journal entries={entries} />
+              <Journal entries={entries} style={companion.style} />
             </ColumnContent>
           </aside>
 
@@ -110,6 +110,7 @@ function LumiApp() {
             <ColumnContent activeKey="workspace" view={view}>
               <Workspace
                 entriesCount={entries.length}
+                style={companion.style}
                 onSaved={(entry, newSkill) => {
                   addEntry(entry);
                   setPulseKey(Date.now());

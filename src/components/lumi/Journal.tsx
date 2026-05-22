@@ -1,17 +1,25 @@
 import { motion } from "framer-motion";
-import type { JournalEntry } from "@/lib/lumi/types";
+import type { CompanionStyle, JournalEntry } from "@/lib/lumi/types";
 import { SKILLS, getLens } from "@/lib/lumi/analyze";
+import { getCopy } from "@/lib/lumi/copy";
 import { NotebookText, Sparkles, ScanLine } from "lucide-react";
 import { PatternCard } from "./PatternCard";
 
-export function Journal({ entries }: { entries: JournalEntry[] }) {
+export function Journal({
+  entries,
+  style,
+}: {
+  entries: JournalEntry[];
+  style?: CompanionStyle;
+}) {
+  const copy = getCopy(style);
   return (
     <div className="flex h-full flex-col">
       <div className="mb-4 flex items-baseline justify-between">
         <div>
-          <h2 className="font-display text-xl">Observation Log</h2>
+          <h2 className="font-display text-xl">{copy.journalTitle}</h2>
           <p className="text-xs text-muted-foreground">
-            A record of judgment, lens by lens
+            {copy.journalSubtitle}
           </p>
         </div>
         <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -21,7 +29,7 @@ export function Journal({ entries }: { entries: JournalEntry[] }) {
 
       <div className="mb-3">
         <PatternCard
-          lensLabel="Comment signals"
+          lensLabel={copy.lensLabel["comment-signals"]}
           title="正文无害，评论区在做生意"
           summary="最近 4 条观察里，你反复注意到：正文看起来像普通分享，但真正的转化动作开始转移到评论区完成。"
           evidence={[
@@ -33,14 +41,11 @@ export function Journal({ entries }: { entries: JournalEntry[] }) {
         />
       </div>
 
-
-
       {entries.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface/50 p-8 text-center">
           <NotebookText className="size-7 text-muted-foreground" />
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Your filed observations will land here — newest first, each one
-            tagged by the lens you used.
+            {copy.journalEmpty}
           </p>
         </div>
       ) : (
@@ -65,7 +70,7 @@ export function Journal({ entries }: { entries: JournalEntry[] }) {
                 <div className="flex flex-wrap items-center gap-1.5">
                   <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
                     <ScanLine className="size-2.5" />
-                    {lens.label}
+                    {copy.lensLabel[lens.id]}
                   </span>
                   {skill && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-accent/50 px-2 py-0.5 text-[10px] font-medium text-accent-foreground">

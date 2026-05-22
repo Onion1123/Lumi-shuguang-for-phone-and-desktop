@@ -5,7 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Wand2, Link2 } from "lucide-react";
 import { toast } from "sonner";
-import type { Analysis, JournalEntry, LensId } from "@/lib/lumi/types";
+import type {
+  Analysis,
+  CompanionStyle,
+  JournalEntry,
+  LensId,
+} from "@/lib/lumi/types";
 import {
   mockAnalyze,
   SKILLS,
@@ -13,23 +18,20 @@ import {
   getLens,
   unlockedFromCount,
 } from "@/lib/lumi/analyze";
+import { getCopy } from "@/lib/lumi/copy";
 import { pickRandomSample, samplePosts } from "@/lib/lumi/samples";
 import { AnalysisPanel } from "./AnalysisPanel";
 import { cn } from "@/lib/utils";
 
 interface Props {
   entriesCount: number;
+  style: CompanionStyle;
   onSaved: (entry: JournalEntry, newSkill: string | null) => void;
 }
 
-const STAGES = [
-  "Reading the post…",
-  "Holding your lens up to it…",
-  "Structuring your one-sentence read…",
-  "Drawing insight tags…",
-];
-
-export function Workspace({ entriesCount, onSaved }: Props) {
+export function Workspace({ entriesCount, style, onSaved }: Props) {
+  const copy = getCopy(style);
+  const STAGES = copy.loadingStages;
   const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -95,7 +97,9 @@ export function Workspace({ entriesCount, onSaved }: Props) {
     if (newlyUnlocked) {
       const skill = SKILLS.find((s) => s.id === newlyUnlocked);
       if (skill) {
-        toast(`✨ Skill unlocked: ${skill.name}`, { description: skill.desc });
+        toast(`✨ ${copy.skillUnlockedPrefix}: ${skill.name}`, {
+          description: skill.desc,
+        });
       }
     }
     setObservation("");
@@ -116,7 +120,7 @@ export function Workspace({ entriesCount, onSaved }: Props) {
           <div>
             <h2 className="font-display text-2xl">Capture a note</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Drop in a post, pick a lens, write one honest sentence.
+              {copy.workspaceSubtitle}
             </p>
           </div>
           <Button
@@ -178,14 +182,14 @@ export function Workspace({ entriesCount, onSaved }: Props) {
                         : "border-border bg-surface text-foreground/75 hover:border-primary/40 hover:text-foreground",
                     )}
                   >
-                    {l.label}
+                    {copy.lensLabel[l.id]}
                   </button>
                 );
               })}
             </div>
             {selectedLens && (
               <p className="mt-2 text-[11px] italic text-muted-foreground">
-                {selectedLens.hint}
+                {copy.lensHint[selectedLens.id]}
               </p>
             )}
           </Field>
@@ -228,6 +232,7 @@ export function Workspace({ entriesCount, onSaved }: Props) {
         loadingStage={stage}
         analysis={analysis}
         observation={savedObservation}
+        style={style}
       />
     </div>
   );

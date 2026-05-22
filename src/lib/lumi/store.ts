@@ -18,8 +18,11 @@ function load(): LumiState {
     const raw = localStorage.getItem(KEY);
     if (!raw) return initial;
     const parsed = JSON.parse(raw) as Partial<LumiState>;
+    const companion = parsed.companion
+      ? { ...parsed.companion, style: parsed.companion.style ?? "professional" }
+      : null;
     return {
-      companion: parsed.companion ?? null,
+      companion,
       entries: parsed.entries ?? [],
       myBoardPosts: parsed.myBoardPosts ?? [],
     };

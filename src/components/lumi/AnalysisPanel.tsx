@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
-import type { Analysis } from "@/lib/lumi/types";
+import type { Analysis, CompanionStyle } from "@/lib/lumi/types";
 import { Sparkles, ScanLine } from "lucide-react";
 import { getLens, SKILLS, XP_PER_ENTRY } from "@/lib/lumi/analyze";
+import { getCopy } from "@/lib/lumi/copy";
 
 interface Props {
   loading?: boolean;
   loadingStage?: string;
   analysis?: Analysis | null;
   observation?: string;
+  style?: CompanionStyle;
 }
 
 export function AnalysisPanel({
@@ -15,7 +17,9 @@ export function AnalysisPanel({
   loadingStage,
   analysis,
   observation,
+  style,
 }: Props) {
+  const copy = getCopy(style);
   if (loading) {
     return (
       <div className="flex h-full min-h-[420px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-surface/60 p-8 text-center">
@@ -26,7 +30,7 @@ export function AnalysisPanel({
         >
           <Sparkles className="size-5" />
         </motion.div>
-        <div className="font-display text-lg">Lumi is structuring…</div>
+        <div className="font-display text-lg">{copy.loadingTitle}</div>
         <motion.div
           key={loadingStage}
           initial={{ opacity: 0, y: 4 }}
@@ -46,11 +50,10 @@ export function AnalysisPanel({
           <Sparkles className="size-5" />
         </div>
         <h3 className="mt-4 font-display text-xl">
-          Your structured read appears here
+          {copy.analysisEmptyTitle}
         </h3>
         <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-          Pick a lens, write one honest sentence. Lumi organizes — it doesn't
-          replace — your judgment.
+          {copy.analysisEmptyBody}
         </p>
       </div>
     );
@@ -68,7 +71,7 @@ export function AnalysisPanel({
     >
       <div className="flex items-center justify-between">
         <div className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-          <Sparkles className="size-3" /> Structured read
+          <Sparkles className="size-3" /> {copy.analysisHeaderChip}
         </div>
         <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
           Just now
@@ -96,12 +99,14 @@ export function AnalysisPanel({
           </div>
           <div>
             <div className="text-sm font-semibold text-foreground">
-              {lens.label}
+              {copy.lensLabel[lens.id]}
               <span className="ml-2 text-xs font-normal text-muted-foreground">
                 {lens.short}
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-muted-foreground">{lens.hint}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {copy.lensHint[lens.id]}
+            </p>
           </div>
         </div>
       </Section>
@@ -109,8 +114,7 @@ export function AnalysisPanel({
       {/* 3. Structured judgment */}
       <Section index={3} label="Structured judgment">
         <p className="text-[11.5px] italic text-muted-foreground">
-          Based on your one-sentence observation, Lumi organized the signal
-          into a reusable judgment.
+          {copy.structuredJudgmentHelper}
         </p>
         {observation && (
           <div className="mt-2 rounded-xl border-l-2 border-primary/60 bg-surface px-3 py-2 text-sm font-medium text-foreground/90">
@@ -152,7 +156,7 @@ export function AnalysisPanel({
               +{XP_PER_ENTRY} XP
             </div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              filed to observation log
+              {copy.xpFooter}
             </div>
           </div>
         </div>
