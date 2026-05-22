@@ -120,7 +120,7 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
           <div>
             <h2 className="font-display text-2xl">Capture a note</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Drop in a post, pick a lens, write one honest sentence.
+              {copy.workspaceSubtitle}
             </p>
           </div>
           <Button
@@ -182,14 +182,14 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
                         : "border-border bg-surface text-foreground/75 hover:border-primary/40 hover:text-foreground",
                     )}
                   >
-                    {l.label}
+                    {copy.lensLabel[l.id]}
                   </button>
                 );
               })}
             </div>
             {selectedLens && (
               <p className="mt-2 text-[11px] italic text-muted-foreground">
-                {selectedLens.hint}
+                {copy.lensHint[selectedLens.id]}
               </p>
             )}
           </Field>
