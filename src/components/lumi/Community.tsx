@@ -9,9 +9,27 @@ import type {
 } from "@/lib/lumi/types";
 import { SKILLS } from "@/lib/lumi/analyze";
 import { PetAvatar } from "./PetAvatar";
+import { PatternCard } from "./PatternCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+
+const recentPatterns = [
+  {
+    lensLabel: "Commercial traces",
+    title: "克制型种草正在跑赢硬广",
+    summary:
+      "5 位观察者本周记录到：高赞内容用「不种草」开场反而提升了转化点击。",
+    count: 5,
+  },
+  {
+    lensLabel: "Trend shift",
+    title: "城市漫步在向街区级颗粒度下沉",
+    summary:
+      "趋势雷达板块里，3 位观察者独立提到「街区名」开始替代「城市名」成为搜索锚点。",
+    count: 3,
+  },
+];
 
 interface Props {
   companion: Companion;
@@ -309,24 +327,53 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="mb-4 flex items-baseline justify-between">
+      <div className="mb-3 flex items-baseline justify-between">
         <div>
-          <h2 className="font-display text-xl">Community</h2>
-          <p className="text-xs text-muted-foreground">
-            Observers, ranked by sharpness
+          <h2 className="font-display text-base text-foreground/80">
+            Community
+          </h2>
+          <p className="text-[11px] text-muted-foreground">
+            Where patterns and skills circulate
           </p>
         </div>
       </div>
 
-      {/* Featured leaderboard */}
-      <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
-        <div className="mb-3 flex items-center gap-1.5">
-          <Trophy className="size-3.5 text-primary" />
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+      {/* Recent patterns — quiet, top-of-mind */}
+      <div className="mb-4">
+        <div className="mb-1.5 flex items-baseline justify-between">
+          <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Recent patterns
+          </span>
+          <span className="text-[10px] text-muted-foreground/70">
+            surfaced this week
+          </span>
+        </div>
+        <div className="space-y-2">
+          {recentPatterns.map((p) => (
+            <PatternCard
+              key={p.title}
+              variant="compact"
+              label="From the network"
+              lensLabel={p.lensLabel}
+              title={p.title}
+              summary={p.summary}
+              evidence={[]}
+              count={p.count}
+              ctaLabel="阅读"
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Featured leaderboard — demoted to small panel */}
+      <div className="rounded-2xl border border-border/70 bg-surface/50 p-3">
+        <div className="mb-2 flex items-center gap-1.5">
+          <Trophy className="size-3 text-muted-foreground" />
+          <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
             This week's featured
           </span>
         </div>
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
           <FeaturedRow
             label="Most skills"
             member={topAllSkills}
@@ -349,7 +396,7 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
       {/* Skill boards */}
       <div className="mt-4">
         <div className="mb-2 flex items-baseline justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
             Skill boards
           </span>
           <span className="text-[10px] text-muted-foreground">
