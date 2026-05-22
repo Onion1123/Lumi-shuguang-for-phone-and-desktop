@@ -19,6 +19,22 @@ export function Journal({ entries }: { entries: JournalEntry[] }) {
         </span>
       </div>
 
+      <div className="mb-3">
+        <PatternCard
+          lensLabel="Comment signals"
+          title="正文无害，评论区在做生意"
+          summary="最近 4 条观察里，你反复注意到：正文看起来像普通分享，但真正的转化动作开始转移到评论区完成。"
+          evidence={[
+            "博主正文没带货，但前排评论已经在问链接。",
+            "内容本身很克制，商业意图主要藏在评论互动里。",
+          ]}
+          count={4}
+          ctaLabel="查看相关记录"
+        />
+      </div>
+
+
+
       {entries.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface/50 p-8 text-center">
           <NotebookText className="size-7 text-muted-foreground" />
