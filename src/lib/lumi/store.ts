@@ -19,7 +19,7 @@ function load(): LumiState {
     if (!raw) return initial;
     const parsed = JSON.parse(raw) as Partial<LumiState>;
     const companion = parsed.companion
-      ? { style: "professional" as const, ...parsed.companion }
+      ? { ...parsed.companion, style: parsed.companion.style ?? "professional" }
       : null;
     return {
       companion,
