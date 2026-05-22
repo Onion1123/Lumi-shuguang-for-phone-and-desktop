@@ -24,6 +24,7 @@ export const samplePosts: SamplePost[] = [
       postBreakdown:
         "标题以\"跑路指南\"制造圈层感，正文用具体数字（6人、15%、40%）建立可信度，结尾的跳槽成功为同类读者提供情绪出口——典型的高保存率职场叙事。",
       contributedSkillId: "emotion-catcher",
+      lens: "emotional-resonance",
     },
   },
   {
@@ -41,6 +42,7 @@ export const samplePosts: SamplePost[] = [
       postBreakdown:
         "前半段调动\"会议碎片化\"的普遍痛点建立共情，中段引入产品作为解决方案，结尾促销信息显形——三段式软广模板，植入节奏控制得很克制。",
       contributedSkillId: "commercial-instinct",
+      lens: "commercial-traces",
     },
   },
   {
@@ -58,6 +60,7 @@ export const samplePosts: SamplePost[] = [
       postBreakdown:
         "正文短小但提供了完整冲突场景：浪费食物 + 探店身份。这种\"道德议题 + 行业揭露\"的组合天然引发评论区站队，正文只是火种，真正的内容生产发生在评论区。",
       contributedSkillId: "comment-hunter",
+      lens: "comment-signals",
     },
   },
   {
@@ -75,6 +78,7 @@ export const samplePosts: SamplePost[] = [
       postBreakdown:
         "负向体验帖往往激发\"反驳型评论\"，恰好把品牌从单向种草拉回真实使用场景。品牌官号选择在分化最激烈时介入，把争议转化为渠道引导，是一次高级别舆情操作。",
       contributedSkillId: "commercial-instinct",
+      lens: "commercial-traces",
     },
   },
   {
@@ -92,6 +96,7 @@ export const samplePosts: SamplePost[] = [
       postBreakdown:
         "同一作者以\"跑路指南\"为模板二次创作，说明该叙事已成为可复用的内容范式。标题中的\"25届\"将话题与新一届校招挂钩，把个人经验扩展为行业趋势观察。",
       contributedSkillId: "trend-radar",
+      lens: "trend-shift",
     },
   },
 ];
