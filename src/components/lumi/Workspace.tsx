@@ -5,7 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Wand2, Link2 } from "lucide-react";
 import { toast } from "sonner";
-import type { Analysis, JournalEntry, LensId } from "@/lib/lumi/types";
+import type {
+  Analysis,
+  CompanionStyle,
+  JournalEntry,
+  LensId,
+} from "@/lib/lumi/types";
 import {
   mockAnalyze,
   SKILLS,
@@ -13,12 +18,14 @@ import {
   getLens,
   unlockedFromCount,
 } from "@/lib/lumi/analyze";
+import { getCopy } from "@/lib/lumi/copy";
 import { pickRandomSample, samplePosts } from "@/lib/lumi/samples";
 import { AnalysisPanel } from "./AnalysisPanel";
 import { cn } from "@/lib/utils";
 
 interface Props {
   entriesCount: number;
+  style: CompanionStyle;
   onSaved: (entry: JournalEntry, newSkill: string | null) => void;
 }
 
