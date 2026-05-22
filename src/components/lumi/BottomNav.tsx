@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const items: { key: ViewKey; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
   { key: "workspace", label: "Workspace", Icon: Sparkles },
-  { key: "journal", label: "Journal", Icon: NotebookText },
+  { key: "journal", label: "Log", Icon: NotebookText },
   { key: "community", label: "Community", Icon: Users },
 ];
 
