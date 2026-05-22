@@ -156,7 +156,7 @@ export function AnalysisPanel({
               +{XP_PER_ENTRY} XP
             </div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              filed to observation log
+              {copy.xpFooter}
             </div>
           </div>
         </div>
