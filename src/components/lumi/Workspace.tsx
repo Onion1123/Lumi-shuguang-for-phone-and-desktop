@@ -29,14 +29,9 @@ interface Props {
   onSaved: (entry: JournalEntry, newSkill: string | null) => void;
 }
 
-const STAGES = [
-  "Reading the post…",
-  "Holding your lens up to it…",
-  "Structuring your one-sentence read…",
-  "Drawing insight tags…",
-];
-
-export function Workspace({ entriesCount, onSaved }: Props) {
+export function Workspace({ entriesCount, style, onSaved }: Props) {
+  const copy = getCopy(style);
+  const STAGES = copy.loadingStages;
   const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -102,7 +97,9 @@ export function Workspace({ entriesCount, onSaved }: Props) {
     if (newlyUnlocked) {
       const skill = SKILLS.find((s) => s.id === newlyUnlocked);
       if (skill) {
-        toast(`✨ Skill unlocked: ${skill.name}`, { description: skill.desc });
+        toast(`✨ ${copy.skillUnlockedPrefix}: ${skill.name}`, {
+          description: skill.desc,
+        });
       }
     }
     setObservation("");
