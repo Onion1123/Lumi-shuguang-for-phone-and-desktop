@@ -7,9 +7,12 @@ export type LensId =
   | "trend-shift"
   | "risk-boundary";
 
+export type CompanionStyle = "professional" | "warm";
+
 export interface Companion {
   type: CompanionType;
   name: string;
+  style: CompanionStyle;
   xp: number;
   level: number;
   unlockedSkills: string[];
