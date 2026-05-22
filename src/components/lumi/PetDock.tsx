@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { Companion } from "@/lib/lumi/types";
 import { PetAvatar } from "./PetAvatar";
 import { xpFor, SKILLS } from "@/lib/lumi/analyze";
+import { getCopy } from "@/lib/lumi/copy";
 
 interface Props {
   companion: Companion;
@@ -15,6 +16,7 @@ export function PetDock({ companion, entriesCount, pulseKey, lastSkillUnlock }: 
   const { level, xpInLevel, xpToNext } = xpFor(entriesCount);
   const pct = Math.min(100, Math.round((xpInLevel / xpToNext) * 100));
   const [bubble, setBubble] = useState<string | null>(null);
+  const copy = getCopy(companion.style);
 
   useEffect(() => {
     if (pulseKey === undefined) return;
@@ -22,17 +24,12 @@ export function PetDock({ companion, entriesCount, pulseKey, lastSkillUnlock }: 
       ? SKILLS.find((s) => s.id === lastSkillUnlock)
       : null;
     const messages = skill
-      ? [`${skill.name} unlocked! ✨`]
-      : [
-          "Nice catch.",
-          "Saved to memory.",
-          "I'm taking notes too.",
-          "+1 sharper.",
-        ];
+      ? [`${skill.name} ${companion.style === "warm" ? "✨ we did it" : "unlocked ✨"}`]
+      : copy.petBubbles;
     setBubble(messages[Math.floor(Math.random() * messages.length)]);
     const t = setTimeout(() => setBubble(null), 2600);
     return () => clearTimeout(t);
-  }, [pulseKey, lastSkillUnlock]);
+  }, [pulseKey, lastSkillUnlock, copy.petBubbles, companion.style]);
 
   return (
     <div className="pointer-events-none fixed bottom-24 right-4 z-30 flex flex-col items-end md:bottom-8 md:right-8">
