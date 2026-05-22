@@ -1,4 +1,54 @@
-import type { Analysis } from "./types";
+import type { Analysis, LensId } from "./types";
+
+export interface Lens {
+  id: LensId;
+  label: string;
+  short: string;
+  skillId: string;
+  hint: string;
+}
+
+export const LENSES: Lens[] = [
+  {
+    id: "comment-signals",
+    label: "Comment signals",
+    short: "评论区信号",
+    skillId: "comment-hunter",
+    hint: "Reading what the comment section reveals.",
+  },
+  {
+    id: "emotional-resonance",
+    label: "Emotional resonance",
+    short: "情绪共鸣",
+    skillId: "emotion-catcher",
+    hint: "Tracing the emotional undertone behind the post.",
+  },
+  {
+    id: "commercial-traces",
+    label: "Commercial traces",
+    short: "商业化痕迹",
+    skillId: "commercial-instinct",
+    hint: "Spotting the conversion logic under the surface.",
+  },
+  {
+    id: "trend-shift",
+    label: "Trend shift",
+    short: "趋势变化",
+    skillId: "trend-radar",
+    hint: "Catching a pattern before it becomes obvious.",
+  },
+  {
+    id: "risk-boundary",
+    label: "Risk boundary",
+    short: "风险边界",
+    skillId: "risk-sentinel",
+    hint: "Noticing where content brushes against a risk line.",
+  },
+];
+
+export function getLens(id: LensId): Lens {
+  return LENSES.find((l) => l.id === id) ?? LENSES[0];
+}
 
 const contentTypes = [
   "Lifestyle ritual",
@@ -56,6 +106,7 @@ export interface AnalyzeInput {
   title?: string;
   content?: string;
   observation: string;
+  lens: LensId;
 }
 
 export function mockAnalyze(input: AnalyzeInput): Analysis {
@@ -66,21 +117,20 @@ export function mockAnalyze(input: AnalyzeInput): Analysis {
       input.observation,
   );
   const ct = contentTypes[seed % contentTypes.length];
-  const angle = angles[(seed >> 3) % angles.length];
-  const tags = pick(tagBank, 3 + (seed % 1)).slice(0, 3);
+  const lens = getLens(input.lens);
+  const angle = lens.label;
+  const tags = pick(tagBank, 3).slice(0, 3);
 
   const titleHint = input.title?.trim() || input.link?.trim() || "the post";
   const contentHint = input.content?.trim().slice(0, 60) || "";
 
   const postBreakdown = input.content
-    ? `Reads as a first-person narrative built around "${truncate(titleHint, 28)}". The author leans on small concrete details (${contentHint ? truncate(contentHint, 40) + "…" : "step-by-step rituals"}) to create intimacy rather than authority — a high-trust pattern for Xiaohongshu's algorithm.`
+    ? `A first-person ${ct.toLowerCase()} built around "${truncate(titleHint, 28)}". The author leans on small concrete details (${contentHint ? truncate(contentHint, 40) + "…" : "step-by-step moments"}) to create intimacy rather than authority.`
     : input.title
-      ? `From the title alone, "${truncate(titleHint, 36)}" signals a ${ct.toLowerCase()} angle. The wording is conversational and curiosity-driven, fitting the platform's save-and-revisit behavior.`
-      : `Limited post context provided. Inferring from the linked source, this likely sits in the ${ct.toLowerCase()} cluster.`;
+      ? `From the title alone, "${truncate(titleHint, 36)}" reads as a ${ct.toLowerCase()} — conversational and curiosity-driven.`
+      : `Limited post context provided. Likely sits in the ${ct.toLowerCase()} cluster.`;
 
-  const summary = `A ${ct.toLowerCase()} note that uses ${angle.toLowerCase()} to land. Combined with your read — "${truncate(input.observation, 50)}" — Lumi sees a clear pattern of ${tags[0]?.toLowerCase() || "personal voice"}.`;
-
-  const contributedSkillId = inferSkill(ct, angle, tags);
+  const summary = `Through the ${lens.label.toLowerCase()} lens, your read — "${truncate(input.observation, 50)}" — points to a reusable pattern: ${tags[0]?.toLowerCase() || "personal voice"}.`;
 
   return {
     summary,
@@ -88,18 +138,9 @@ export function mockAnalyze(input: AnalyzeInput): Analysis {
     observationAngle: angle,
     insightTags: tags,
     postBreakdown,
-    contributedSkillId,
+    contributedSkillId: lens.skillId,
+    lens: input.lens,
   };
-}
-
-function inferSkill(ct: string, angle: string, tags: string[]): string {
-  const blob = (ct + " " + angle + " " + tags.join(" ")).toLowerCase();
-  if (/comment|save-rate|hook|template/.test(blob)) return "comment-hunter";
-  if (/emotion|healing|vulnerab|resonance/.test(blob)) return "emotion-catcher";
-  if (/product|review|conversion|commercial|budget/.test(blob))
-    return "commercial-instinct";
-  if (/trend|niche|micro|aesthetic|anti-/.test(blob)) return "trend-radar";
-  return "comment-hunter";
 }
 
 function truncate(s: string, n: number) {
@@ -131,7 +172,15 @@ export const SKILLS = [
     desc: "You catch micro-trends earlier than the feed surfaces them.",
     threshold: 11,
   },
+  {
+    id: "risk-sentinel",
+    name: "Risk Sentinel",
+    desc: "You notice where content brushes against a risk line.",
+    threshold: 14,
+  },
 ];
+
+export const XP_PER_ENTRY = 18;
 
 export function xpFor(entries: number) {
   // each entry = 18 xp; level every 60

@@ -1,5 +1,12 @@
 export type CompanionType = "cat" | "dog" | "box" | "soda";
 
+export type LensId =
+  | "comment-signals"
+  | "emotional-resonance"
+  | "commercial-traces"
+  | "trend-shift"
+  | "risk-boundary";
+
 export interface Companion {
   type: CompanionType;
   name: string;
@@ -15,6 +22,7 @@ export interface Analysis {
   insightTags: string[];
   postBreakdown: string;
   contributedSkillId: string;
+  lens: LensId;
 }
 
 export interface JournalEntry {

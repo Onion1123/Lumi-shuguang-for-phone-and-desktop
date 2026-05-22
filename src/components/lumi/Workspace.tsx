@@ -5,10 +5,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Wand2, Link2 } from "lucide-react";
 import { toast } from "sonner";
-import type { Analysis, JournalEntry } from "@/lib/lumi/types";
-import { mockAnalyze, SKILLS, unlockedFromCount } from "@/lib/lumi/analyze";
+import type { Analysis, JournalEntry, LensId } from "@/lib/lumi/types";
+import {
+  mockAnalyze,
+  SKILLS,
+  LENSES,
+  getLens,
+  unlockedFromCount,
+} from "@/lib/lumi/analyze";
 import { pickRandomSample, samplePosts } from "@/lib/lumi/samples";
 import { AnalysisPanel } from "./AnalysisPanel";
+import { cn } from "@/lib/utils";
 
 interface Props {
   entriesCount: number;
@@ -17,8 +24,8 @@ interface Props {
 
 const STAGES = [
   "Reading the post…",
-  "Mapping the content type…",
-  "Layering in your observation…",
+  "Holding your lens up to it…",
+  "Structuring your one-sentence read…",
   "Drawing insight tags…",
 ];
 
@@ -27,13 +34,15 @@ export function Workspace({ entriesCount, onSaved }: Props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [observation, setObservation] = useState("");
+  const [lens, setLens] = useState<LensId | null>(null);
   const [loading, setLoading] = useState(false);
   const [stage, setStage] = useState(STAGES[0]);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [savedObservation, setSavedObservation] = useState("");
 
   const hasPost = !!(link.trim() || title.trim() || content.trim());
-  const canSubmit = hasPost && observation.trim().length > 0 && !loading;
+  const canSubmit =
+    hasPost && observation.trim().length > 0 && !!lens && !loading;
 
   function loadSample() {
     const s = pickRandomSample();
@@ -41,13 +50,14 @@ export function Workspace({ entriesCount, onSaved }: Props) {
     setTitle(s.title);
     setContent(s.content);
     setObservation(s.observation);
+    setLens(s.analysis.lens);
     toast.success("Sample template loaded", {
-      description: "Click Analyze with Lumi to see the read.",
+      description: "Click Analyze with Lumi to see the structured read.",
     });
   }
 
   async function analyze() {
-    if (!canSubmit) return;
+    if (!canSubmit || !lens) return;
     setLoading(true);
     setAnalysis(null);
     for (let i = 0; i < STAGES.length; i++) {
@@ -60,9 +70,9 @@ export function Workspace({ entriesCount, onSaved }: Props) {
         s.content === content.trim() &&
         s.observation === observation.trim(),
     );
-    const result = matched
-      ? matched.analysis
-      : mockAnalyze({ link, title, content, observation });
+    const result: Analysis = matched
+      ? { ...matched.analysis, lens }
+      : mockAnalyze({ link, title, content, observation, lens });
     setAnalysis(result);
     setSavedObservation(observation);
     setLoading(false);
@@ -85,14 +95,14 @@ export function Workspace({ entriesCount, onSaved }: Props) {
     if (newlyUnlocked) {
       const skill = SKILLS.find((s) => s.id === newlyUnlocked);
       if (skill) {
-        toast(`✨ Skill unlocked: ${skill.name}`, {
-          description: skill.desc,
-        });
+        toast(`✨ Skill unlocked: ${skill.name}`, { description: skill.desc });
       }
     }
-    // Reset observation only — keep post for re-reading
     setObservation("");
+    setLens(null);
   }
+
+  const selectedLens = lens ? getLens(lens) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -106,8 +116,7 @@ export function Workspace({ entriesCount, onSaved }: Props) {
           <div>
             <h2 className="font-display text-2xl">Capture a note</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Drop in a post — at least one of link, title, or content. Then
-              your one-sentence read.
+              Drop in a post, pick a lens, write one honest sentence.
             </p>
           </div>
           <Button
@@ -153,6 +162,34 @@ export function Workspace({ entriesCount, onSaved }: Props) {
             />
           </Field>
 
+          <Field label="Observation lens" required>
+            <div className="flex flex-wrap gap-1.5">
+              {LENSES.map((l) => {
+                const active = lens === l.id;
+                return (
+                  <button
+                    key={l.id}
+                    type="button"
+                    onClick={() => setLens(l.id)}
+                    className={cn(
+                      "rounded-full border px-3 py-1.5 text-xs font-medium transition-all",
+                      active
+                        ? "border-primary bg-primary text-primary-foreground shadow-glow"
+                        : "border-border bg-surface text-foreground/75 hover:border-primary/40 hover:text-foreground",
+                    )}
+                  >
+                    {l.label}
+                  </button>
+                );
+              })}
+            </div>
+            {selectedLens && (
+              <p className="mt-2 text-[11px] italic text-muted-foreground">
+                {selectedLens.hint}
+              </p>
+            )}
+          </Field>
+
           <Field label="Your one-sentence read" required>
             <Textarea
               value={observation}
@@ -165,11 +202,13 @@ export function Workspace({ entriesCount, onSaved }: Props) {
 
           <div className="flex items-center justify-between gap-3 pt-1">
             <div className="text-xs text-muted-foreground">
-              {hasPost
-                ? observation.trim()
-                  ? "Ready when you are."
-                  : "Add your one-sentence read."
-                : "Add a link, title, or paste content to begin."}
+              {!hasPost
+                ? "Add a link, title, or paste content to begin."
+                : !lens
+                  ? "Pick the lens you're using to read this."
+                  : !observation.trim()
+                    ? "Add your one-sentence read."
+                    : "Ready when you are."}
             </div>
             <Button
               type="button"
@@ -212,9 +251,7 @@ function Field({
           {label}
         </label>
         {optional && (
-          <span className="text-[10px] text-muted-foreground/70">
-            optional
-          </span>
+          <span className="text-[10px] text-muted-foreground/70">optional</span>
         )}
         {required && (
           <span className="text-[10px] font-medium text-primary">required</span>
