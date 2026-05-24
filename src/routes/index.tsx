@@ -69,7 +69,7 @@ function LumiApp() {
           <div>
             <div className="font-display text-lg leading-tight">Lumi</div>
             <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
-              Internal preview
+              内部预览
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@ function LumiApp() {
           size="sm"
           className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
           onClick={() => {
-            if (confirm("Reset companion and clear all saved data?")) {
+            if (confirm("确定要重置吗？将清空小伙伴、所有观察和规律卡片。")) {
               reset();
               try {
                 localStorage.clear();
@@ -89,7 +89,7 @@ function LumiApp() {
             }
           }}
         >
-          <RotateCcw className="size-3.5" /> Reset demo
+          <RotateCcw className="size-3.5" /> 重置
         </Button>
       </header>
 
