@@ -17,17 +17,17 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Lumi — Notes that grow with you" },
+      { title: "Lumi — 陪你一起观察的笔记" },
       {
         name: "description",
         content:
-          "Lumi turns daily content observations into visible personal judgment growth. A warm, lightweight companion for content ecosystem observers.",
+          "Lumi 把你每天对内容的观察，变成看得见的判断力成长。一个安静、温柔的内容生态观察伙伴。",
       },
-      { property: "og:title", content: "Lumi — Notes that grow with you" },
+      { property: "og:title", content: "Lumi — 陪你一起观察的笔记" },
       {
         property: "og:description",
         content:
-          "Save a post, drop your one-sentence read, and watch your judgment sharpen over time.",
+          "存下一篇笔记，写下你的一句话判断，看你的判断力一天天变锋利。",
       },
     ],
   }),
