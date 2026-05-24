@@ -74,17 +74,17 @@ export function AnalysisPanel({
           <Sparkles className="size-3" /> {copy.analysisHeaderChip}
         </div>
         <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
-          Just now
+          刚刚
         </div>
       </div>
 
       {/* 1. Post summary */}
-      <Section index={1} label="Post summary">
+      <Section index={1} label="笔记速览">
         <p className="text-sm leading-relaxed text-foreground/85">
           {analysis.postBreakdown}
         </p>
         <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-surface px-2.5 py-1 text-[11px] text-muted-foreground">
-          <span className="uppercase tracking-wider">Content type</span>
+          <span className="uppercase tracking-wider">内容类型</span>
           <span className="font-medium text-foreground">
             · {analysis.contentType}
           </span>
@@ -92,7 +92,7 @@ export function AnalysisPanel({
       </Section>
 
       {/* 2. Selected observation lens */}
-      <Section index={2} label="Selected lens">
+      <Section index={2} label="选用视角">
         <div className="flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3">
           <div className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
             <ScanLine className="size-3.5" />
@@ -112,7 +112,7 @@ export function AnalysisPanel({
       </Section>
 
       {/* 3. Structured judgment */}
-      <Section index={3} label="Structured judgment">
+      <Section index={3} label="结构化判断">
         <p className="text-[11.5px] italic text-muted-foreground">
           {copy.structuredJudgmentHelper}
         </p>
@@ -127,7 +127,7 @@ export function AnalysisPanel({
       </Section>
 
       {/* 4. Insight tags */}
-      <Section index={4} label="Insight tags">
+      <Section index={4} label="洞察标签">
         <div className="flex flex-wrap gap-2">
           {analysis.insightTags.map((t) => (
             <span
@@ -141,11 +141,11 @@ export function AnalysisPanel({
       </Section>
 
       {/* 5. Skill XP gained */}
-      <Section index={5} label="Skill XP gained">
+      <Section index={5} label="本次技能经验">
         <div className="flex items-center justify-between rounded-2xl border border-border bg-surface px-4 py-3">
           <div>
             <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
-              Contributed to
+              贡献到
             </div>
             <div className="mt-0.5 text-sm font-semibold text-foreground">
               {skill?.name ?? "—"}
@@ -164,6 +164,7 @@ export function AnalysisPanel({
     </motion.div>
   );
 }
+
 
 function Section({
   index,

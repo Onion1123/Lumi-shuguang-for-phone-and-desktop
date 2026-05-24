@@ -8,7 +8,7 @@ import { getCopy } from "@/lib/lumi/copy";
 
 export const Route = createFileRoute("/pattern/$id")({
   head: () => ({
-    meta: [{ title: "Pattern detail — Lumi" }],
+    meta: [{ title: "规律详情 — Lumi" }],
   }),
   component: PatternDetail,
 });
@@ -23,9 +23,9 @@ function PatternDetail() {
     return (
       <div className="mx-auto max-w-2xl px-6 py-10">
         <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="size-3.5" /> Back
+          <ArrowLeft className="size-3.5" /> 返回
         </Link>
-        <p className="mt-6 text-sm text-muted-foreground">Pattern not found.</p>
+        <p className="mt-6 text-sm text-muted-foreground">未找到这条规律。</p>
       </div>
     );
   }
@@ -39,7 +39,7 @@ function PatternDetail() {
         to="/"
         className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft className="size-3.5" /> Back to log
+        <ArrowLeft className="size-3.5" /> 返回观察日志
       </Link>
 
       <motion.article
@@ -53,7 +53,7 @@ function PatternDetail() {
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
-            Pattern surfaced
+            发现规律
           </span>
           <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-surface/80 px-2 py-0.5 text-[10px] font-medium text-foreground/75">
             <ScanLine className="size-2.5" />
@@ -67,14 +67,14 @@ function PatternDetail() {
           {pattern.summary}
         </p>
         <div className="mt-4 border-t border-border/60 pt-3 text-[10.5px] uppercase tracking-wider text-muted-foreground">
-          Built from {pattern.count} observations
+          来自 {pattern.count} 条观察
         </div>
       </motion.article>
 
       <section className="mt-8">
-        <h2 className="font-display text-lg">Source observations</h2>
+        <h2 className="font-display text-lg">观察证据</h2>
         <p className="mb-3 text-xs text-muted-foreground">
-          Evidence that surfaced this pattern.
+          构成这条规律的证据。
         </p>
         <ul className="space-y-2">
           {pattern.evidence.map((e, i) => (
@@ -92,14 +92,14 @@ function PatternDetail() {
 
       {relatedEntries.length > 0 && (
         <section className="mt-8">
-          <h2 className="font-display text-lg">Your related entries</h2>
+          <h2 className="font-display text-lg">你的相关记录</h2>
           <p className="mb-3 text-xs text-muted-foreground">
-            Notes you logged under the {copy.lensLabel[lens.id]} lens.
+            你在「{copy.lensLabel[lens.id]}」视角下记录的笔记。
           </p>
           <ul className="space-y-2">
             {relatedEntries.map((e) => {
               const skill = SKILLS.find((s) => s.id === e.analysis.contributedSkillId);
-              const snippet = e.title || e.content?.slice(0, 70) || e.link || "Untitled";
+              const snippet = e.title || e.content?.slice(0, 70) || e.link || "未命名";
               return (
                 <li
                   key={e.id}
@@ -120,7 +120,7 @@ function PatternDetail() {
                     "{e.observation}"
                   </blockquote>
                   <div className="mt-2 line-clamp-1 border-t border-dashed border-border pt-2 text-[10.5px] text-muted-foreground/80">
-                    <span className="uppercase tracking-wider">Source · </span>
+                    <span className="uppercase tracking-wider">来源 · </span>
                     {snippet}
                   </div>
                 </li>

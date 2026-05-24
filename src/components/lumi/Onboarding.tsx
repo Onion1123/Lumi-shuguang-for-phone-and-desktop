@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 import { Briefcase, Heart } from "lucide-react";
 
 const choices: { type: CompanionType; tagline: string }[] = [
-  { type: "cat", tagline: "Observes everything, judges quietly." },
-  { type: "dog", tagline: "Follows you through every note." },
-  { type: "box", tagline: "Holds your thoughts, no questions asked." },
-  { type: "soda", tagline: "Pops with energy on every save." },
+  { type: "cat", tagline: "看在眼里，默默判断。" },
+  { type: "dog", tagline: "陪你翻完每一篇笔记。" },
+  { type: "box", tagline: "默默收下你的所有想法。" },
+  { type: "soda", tagline: "每次保存都嘶嘶作响。" },
 ];
 
 const styleChoices: {
@@ -26,16 +26,16 @@ const styleChoices: {
 }[] = [
   {
     id: "professional",
-    title: "Professional",
+    title: "专业型",
     subtitle:
-      "Like a thoughtful colleague helping you structure your content judgment.",
+      "像一个细心的同事，帮你把内容判断结构化。",
     Icon: Briefcase,
   },
   {
     id: "warm",
-    title: "Warm",
+    title: "陪伴型",
     subtitle:
-      "Like a close companion helping you capture passing thoughts.",
+      "像一个亲密的伙伴，帮你接住每一个一闪而过的念头。",
     Icon: Heart,
   },
 ];
@@ -62,16 +62,15 @@ export function Onboarding({
       >
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground">
           <span className="size-1.5 rounded-full bg-primary" />
-          Lumi · internal preview
+          Lumi · 内部预览
         </div>
         <h1 className="mt-6 text-5xl font-medium tracking-tight md:text-6xl">
-          Bring a small companion <br /> to your reading.
+          给你的阅读， <br /> 找一个小伙伴。
         </h1>
         <p className="mt-4 text-base text-muted-foreground md:text-lg">
-          Lumi turns the notes you observe each day into visible, growing
-          judgment.
+          Lumi 把你每天观察到的笔记，变成看得见的判断力成长。
           <br className="hidden md:block" />
-          Pick a companion — they'll grow with every observation you save.
+          挑一个小伙伴 —— 你每记录一条观察，它都会跟着长大。
         </p>
       </motion.div>
 
@@ -113,12 +112,12 @@ export function Onboarding({
         className="mt-8 flex w-full max-w-md flex-col gap-3"
       >
         <label className="text-sm font-medium text-muted-foreground">
-          Give them a name
+          给它起个名字
         </label>
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Mochi, Pumpkin, Box-kun…"
+          placeholder="比如 麻薯、南瓜、盒盒…"
           disabled={!picked}
           className="h-12 rounded-xl text-base"
         />
@@ -135,11 +134,10 @@ export function Onboarding({
           >
             <div className="mt-8">
               <div className="text-sm font-medium text-muted-foreground">
-                Choose your companionship style
+                选择陪伴方式
               </div>
               <p className="mt-1 text-xs text-muted-foreground/80">
-                Sets the tone {name.trim() || "your companion"} uses across
-                the app. You can imagine the rest.
+                决定 {name.trim() || "它"} 在 app 里说话的语气，其余的你可以自己想象。
               </p>
               <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                 {styleChoices.map(({ id, title, subtitle, Icon }) => {
@@ -200,7 +198,7 @@ export function Onboarding({
           }
           className="h-12 w-full rounded-xl bg-gradient-primary text-base shadow-glow"
         >
-          Start observing →
+          开始观察 →
         </Button>
       </div>
     </div>

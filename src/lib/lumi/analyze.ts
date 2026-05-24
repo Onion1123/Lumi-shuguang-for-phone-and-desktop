@@ -150,35 +150,36 @@ function truncate(s: string, n: number) {
 export const SKILLS = [
   {
     id: "comment-hunter",
-    name: "Comment Hunter",
-    desc: "You consistently spot what makes audiences want to reply.",
+    name: "评论猎手",
+    desc: "你总能看出什么会让读者想留言。",
     threshold: 2,
   },
   {
     id: "emotion-catcher",
-    name: "Emotion Catcher",
-    desc: "You read the emotional undertone behind everyday posts.",
+    name: "情绪捕手",
+    desc: "你能读出日常笔记背后的情绪。",
     threshold: 4,
   },
   {
     id: "commercial-instinct",
-    name: "Commercial Instinct",
-    desc: "You sense conversion potential before metrics show it.",
+    name: "商业嗅觉",
+    desc: "你比数据更早察觉到转化潜力。",
     threshold: 7,
   },
   {
     id: "trend-radar",
-    name: "Trend Radar",
-    desc: "You catch micro-trends earlier than the feed surfaces them.",
+    name: "趋势雷达",
+    desc: "你比首页更早抓到微趋势。",
     threshold: 11,
   },
   {
     id: "risk-sentinel",
-    name: "Risk Sentinel",
-    desc: "You notice where content brushes against a risk line.",
+    name: "风险哨兵",
+    desc: "你能注意到内容与风险边界的擦边。",
     threshold: 14,
   },
 ];
+
 
 export const XP_PER_ENTRY = 18;
 
