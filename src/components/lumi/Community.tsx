@@ -353,7 +353,8 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
         <div className="space-y-2">
           {recentPatterns.map((p) => (
             <PatternCard
-              key={p.title}
+              key={p.id}
+              id={p.id}
               variant="compact"
               label="From the network"
               lensLabel={p.lensLabel}
