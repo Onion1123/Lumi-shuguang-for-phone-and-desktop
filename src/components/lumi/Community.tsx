@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 const recentPatterns = [
   {
     id: "restrained-seeding",
-    lensLabel: "Commercial traces",
+    lensLabel: "商业化痕迹",
     title: "克制型种草正在跑赢硬广",
     summary:
       "5 位观察者本周记录到：高赞内容用「不种草」开场反而提升了转化点击。",
@@ -25,7 +25,7 @@ const recentPatterns = [
   },
   {
     id: "neighborhood-citywalk",
-    lensLabel: "Trend shift",
+    lensLabel: "趋势变化",
     title: "城市漫步在向街区级颗粒度下沉",
     summary:
       "趋势雷达板块里，3 位观察者独立提到「街区名」开始替代「城市名」成为搜索锚点。",
@@ -249,7 +249,7 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
           }}
           className="mb-3 inline-flex items-center gap-1.5 self-start text-xs text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft className="size-3.5" /> Back to community
+          <ArrowLeft className="size-3.5" /> 返回广场
         </button>
         <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
           <div className="flex items-center gap-2">
@@ -275,11 +275,11 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
                 <span className="text-xs font-semibold">{p.author}</span>
                 {p.isMe && (
                   <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-medium text-primary">
-                    you
+                    我
                   </span>
                 )}
                 <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {formatRelative(p.createdAt)} · {p.replies} replies
+                  {formatRelative(p.createdAt)} · {p.replies} 条回复
                 </span>
               </div>
               <p className="mt-1.5 text-[13px] leading-snug text-foreground/85">
@@ -293,13 +293,13 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
           <Textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder={`Share a quick read with the ${skill.name} board…`}
+            placeholder={`在「${skill.name}」板块分享一条观察…`}
             rows={2}
             className="resize-none rounded-xl border-0 bg-transparent text-sm focus-visible:ring-0"
           />
           <div className="flex items-center justify-between px-1 pb-1">
             <span className="text-[10px] text-muted-foreground">
-              Posting as {companion.name}
+              以 {companion.name} 身份发布
             </span>
             <Button
               size="sm"
@@ -319,7 +319,7 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
               }}
               className="h-8 gap-1.5 rounded-full bg-gradient-primary px-3 text-xs"
             >
-              <Send className="size-3" /> Post
+              <Send className="size-3" /> 发布
             </Button>
           </div>
         </div>
@@ -327,71 +327,75 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
     );
   }
 
+  const showPatterns = entries.length > 0;
+
   return (
     <div className="flex h-full flex-col">
       <div className="mb-3 flex items-baseline justify-between">
         <div>
           <h2 className="font-display text-base text-foreground/80">
-            Community
+            广场
           </h2>
           <p className="text-[11px] text-muted-foreground">
-            Where patterns and skills circulate
+            规律和技能在这里流动
           </p>
         </div>
       </div>
 
       {/* Recent patterns — quiet, top-of-mind */}
-      <div className="mb-4">
-        <div className="mb-1.5 flex items-baseline justify-between">
-          <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Recent patterns
-          </span>
-          <span className="text-[10px] text-muted-foreground/70">
-            surfaced this week
-          </span>
+      {showPatterns && (
+        <div className="mb-4">
+          <div className="mb-1.5 flex items-baseline justify-between">
+            <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
+              最近的规律
+            </span>
+            <span className="text-[10px] text-muted-foreground/70">
+              本周浮现
+            </span>
+          </div>
+          <div className="space-y-2">
+            {recentPatterns.map((p) => (
+              <PatternCard
+                key={p.id}
+                id={p.id}
+                variant="compact"
+                label="来自社区"
+                lensLabel={p.lensLabel}
+                title={p.title}
+                summary={p.summary}
+                evidence={[]}
+                count={p.count}
+                ctaLabel="查看相关记录 →"
+              />
+            ))}
+          </div>
         </div>
-        <div className="space-y-2">
-          {recentPatterns.map((p) => (
-            <PatternCard
-              key={p.id}
-              id={p.id}
-              variant="compact"
-              label="From the network"
-              lensLabel={p.lensLabel}
-              title={p.title}
-              summary={p.summary}
-              evidence={[]}
-              count={p.count}
-              ctaLabel="阅读"
-            />
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Featured leaderboard — demoted to small panel */}
       <div className="rounded-2xl border border-border/70 bg-surface/50 p-3">
         <div className="mb-2 flex items-center gap-1.5">
           <Trophy className="size-3 text-muted-foreground" />
           <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
-            This week's featured
+            本周精选
           </span>
         </div>
         <ul className="space-y-1.5">
           <FeaturedRow
-            label="Most skills"
+            label="技能最全"
             member={topAllSkills}
-            metric={`${totalSkillsOf(topAllSkills)} / ${SKILLS.length} skills`}
+            metric={`${totalSkillsOf(topAllSkills)} / ${SKILLS.length} 项技能`}
           />
           <FeaturedRow
-            label="You"
+            label="你"
             member={me}
-            metric={`${totalSkillsOf(me)} / ${SKILLS.length} skills · ${entries.length} notes`}
+            metric={`${totalSkillsOf(me)} / ${SKILLS.length} 项技能 · ${entries.length} 条观察`}
             highlight
           />
           <FeaturedRow
-            label="Top mastery"
+            label="单项最强"
             member={topSingleSkill}
-            metric={`${topMasteryOf(topSingleSkill)} notes in one skill`}
+            metric={`单项 ${topMasteryOf(topSingleSkill)} 条`}
           />
         </ul>
       </div>
@@ -400,10 +404,10 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
       <div className="mt-4">
         <div className="mb-2 flex items-baseline justify-between">
           <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Skill boards
+            技能板块
           </span>
           <span className="text-[10px] text-muted-foreground">
-            {myUnlocked.size}/{SKILLS.length} unlocked
+            {myUnlocked.size}/{SKILLS.length} 已解锁
           </span>
         </div>
         <ul className="space-y-2">
@@ -443,15 +447,15 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
                       <span className="text-sm font-semibold">{s.name}</span>
                       <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
                         {unlocked
-                          ? `${memberCount} members`
-                          : `unlocks @ ${s.threshold}`}
+                          ? `${memberCount} 人`
+                          : `${s.threshold} 条解锁`}
                       </span>
                     </div>
                     {recent && (
                       <p className="line-clamp-2 text-[11.5px] leading-snug text-muted-foreground">
                         {unlocked
                           ? `"${recent.text}"`
-                          : "Unlock this skill to read what members are sharing."}
+                          : "解锁这项技能后即可阅读成员分享。"}
                       </p>
                     )}
                   </button>
@@ -504,10 +508,10 @@ function FeaturedRow({
 function formatRelative(ts: number) {
   const diff = Date.now() - ts;
   const m = Math.floor(diff / 60000);
-  if (m < 1) return "just now";
-  if (m < 60) return `${m}m`;
+  if (m < 1) return "刚刚";
+  if (m < 60) return `${m} 分钟前`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h`;
+  if (h < 24) return `${h} 小时前`;
   const d = Math.floor(h / 24);
-  return `${d}d`;
+  return `${d} 天前`;
 }
