@@ -4,8 +4,8 @@ import { Sparkles, NotebookText, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items: { key: ViewKey; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
-  { key: "workspace", label: "Workspace", Icon: Sparkles },
   { key: "journal", label: "Log", Icon: NotebookText },
+  { key: "workspace", label: "Workspace", Icon: Sparkles },
   { key: "community", label: "Community", Icon: Users },
 ];
 
