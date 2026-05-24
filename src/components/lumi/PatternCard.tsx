@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ScanLine, ArrowRight, Layers } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export interface Pattern {
+  id?: string;
   label?: string;
   lensLabel: string;
   title: string;
@@ -9,19 +11,18 @@ export interface Pattern {
   evidence: string[];
   count: number;
   ctaLabel?: string;
-  onCta?: () => void;
   variant?: "featured" | "compact";
 }
 
 export function PatternCard({
+  id,
   label = "Pattern surfaced",
   lensLabel,
   title,
   summary,
   evidence,
   count,
-  ctaLabel = "View related entries",
-  onCta,
+  ctaLabel = "View related records",
   variant = "featured",
 }: Pattern) {
   const compact = variant === "compact";
@@ -104,13 +105,19 @@ export function PatternCard({
         <span className="text-[10.5px] uppercase tracking-wider text-muted-foreground">
           Built from {count} observations
         </span>
-        <button
-          type="button"
-          onClick={onCta}
-          className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-primary hover:underline"
-        >
-          {ctaLabel} <ArrowRight className="size-3" />
-        </button>
+        {id ? (
+          <Link
+            to="/pattern/$id"
+            params={{ id }}
+            className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-primary hover:underline"
+          >
+            {ctaLabel} <ArrowRight className="size-3" />
+          </Link>
+        ) : (
+          <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-muted-foreground">
+            {ctaLabel} <ArrowRight className="size-3" />
+          </span>
+        )}
       </div>
     </motion.article>
   );
