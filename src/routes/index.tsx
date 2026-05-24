@@ -78,7 +78,15 @@ function LumiApp() {
           size="sm"
           className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
           onClick={() => {
-            if (confirm("Reset companion and clear all saved notes?")) reset();
+            if (confirm("Reset companion and clear all saved data?")) {
+              reset();
+              try {
+                localStorage.clear();
+              } catch {
+                /* no-op */
+              }
+              window.location.reload();
+            }
           }}
         >
           <RotateCcw className="size-3.5" /> Reset demo
