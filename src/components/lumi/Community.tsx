@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 const recentPatterns = [
   {
+    id: "restrained-seeding",
     lensLabel: "Commercial traces",
     title: "克制型种草正在跑赢硬广",
     summary:
@@ -23,6 +24,7 @@ const recentPatterns = [
     count: 5,
   },
   {
+    id: "neighborhood-citywalk",
     lensLabel: "Trend shift",
     title: "城市漫步在向街区级颗粒度下沉",
     summary:
