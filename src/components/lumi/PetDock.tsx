@@ -24,7 +24,7 @@ export function PetDock({ companion, entriesCount, pulseKey, lastSkillUnlock }: 
       ? SKILLS.find((s) => s.id === lastSkillUnlock)
       : null;
     const messages = skill
-      ? [`${skill.name} ${companion.style === "warm" ? "✨ we did it" : "unlocked ✨"}`]
+      ? [`${skill.name} ${companion.style === "warm" ? "✨ 我们做到了" : "已解锁 ✨"}`]
       : copy.petBubbles;
     setBubble(messages[Math.floor(Math.random() * messages.length)]);
     const t = setTimeout(() => setBubble(null), 2600);

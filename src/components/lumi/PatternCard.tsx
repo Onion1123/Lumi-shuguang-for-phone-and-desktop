@@ -16,13 +16,13 @@ export interface Pattern {
 
 export function PatternCard({
   id,
-  label = "Pattern surfaced",
+  label = "发现规律",
   lensLabel,
   title,
   summary,
   evidence,
   count,
-  ctaLabel = "View related records",
+  ctaLabel = "查看相关记录 →",
   variant = "featured",
 }: Pattern) {
   const compact = variant === "compact";
@@ -103,7 +103,7 @@ export function PatternCard({
         }
       >
         <span className="text-[10.5px] uppercase tracking-wider text-muted-foreground">
-          Built from {count} observations
+          来自 {count} 条观察
         </span>
         {id ? (
           <Link
