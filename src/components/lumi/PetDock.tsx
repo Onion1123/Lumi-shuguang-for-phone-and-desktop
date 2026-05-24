@@ -32,14 +32,14 @@ export function PetDock({ companion, entriesCount, pulseKey, lastSkillUnlock }: 
   }, [pulseKey, lastSkillUnlock, copy.petBubbles, companion.style]);
 
   return (
-    <div className="pointer-events-none fixed bottom-24 right-4 z-30 flex flex-col items-end md:bottom-8 md:right-8">
+    <div className="pointer-events-none fixed bottom-24 right-0 z-30 flex flex-col items-end md:bottom-8">
       <AnimatePresence>
         {bubble && (
           <motion.div
             initial={{ opacity: 0, y: 8, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
-            className="pointer-events-auto mb-2 max-w-[200px] rounded-2xl border border-border bg-card px-3 py-2 text-xs font-medium text-foreground shadow-soft"
+            className="pointer-events-auto mb-2 mr-4 max-w-[200px] rounded-2xl border border-border bg-card px-3 py-2 text-xs font-medium text-foreground shadow-soft"
           >
             {bubble}
           </motion.div>
@@ -54,10 +54,10 @@ export function PetDock({ companion, entriesCount, pulseKey, lastSkillUnlock }: 
         }
         key={pulseKey}
         transition={{ duration: 0.7, ease: "easeInOut" }}
-        className="pointer-events-auto flex items-center gap-3 rounded-full border border-border bg-card/90 p-2 pr-4 shadow-soft backdrop-blur"
+        className="group pointer-events-auto flex translate-x-[calc(100%-58px)] items-center gap-3 rounded-l-full border border-r-0 border-border bg-card/90 p-2 pr-4 shadow-soft backdrop-blur transition-transform duration-500 ease-out hover:translate-x-0"
       >
         <PetAvatar type={companion.type} size={44} />
-        <div className="min-w-[120px]">
+        <div className="min-w-[120px] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className="flex items-baseline justify-between gap-2">
             <span className="text-xs font-semibold">{companion.name}</span>
             <span className="text-[10px] text-muted-foreground">
