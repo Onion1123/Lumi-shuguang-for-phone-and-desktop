@@ -4,9 +4,9 @@ import { Sparkles, NotebookText, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items: { key: ViewKey; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
-  { key: "journal", label: "Log", Icon: NotebookText },
-  { key: "workspace", label: "Workspace", Icon: Sparkles },
-  { key: "community", label: "Community", Icon: Users },
+  { key: "journal", label: "观察日志", Icon: NotebookText },
+  { key: "workspace", label: "工作台", Icon: Sparkles },
+  { key: "community", label: "广场", Icon: Users },
 ];
 
 export function BottomNav({
