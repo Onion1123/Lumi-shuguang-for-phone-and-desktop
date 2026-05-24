@@ -53,8 +53,8 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
     setContent(s.content);
     setObservation(s.observation);
     setLens(s.analysis.lens);
-    toast.success("Sample template loaded", {
-      description: "Click Analyze with Lumi to see the structured read.",
+    toast.success("示例已加载", {
+      description: "点「让 Lumi 解读」看完整结构化解析。",
     });
   }
 
@@ -97,7 +97,7 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
     if (newlyUnlocked) {
       const skill = SKILLS.find((s) => s.id === newlyUnlocked);
       if (skill) {
-        toast(`✨ ${copy.skillUnlockedPrefix}: ${skill.name}`, {
+        toast(`✨ ${copy.skillUnlockedPrefix}：${skill.name}`, {
           description: skill.desc,
         });
       }
@@ -118,7 +118,7 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-display text-2xl">Capture a note</h2>
+            <h2 className="font-display text-2xl">记录一条观察</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {copy.workspaceSubtitle}
             </p>
@@ -130,12 +130,12 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
             onClick={loadSample}
             className="gap-1.5 rounded-full border-dashed text-xs"
           >
-            <Wand2 className="size-3.5" /> Try sample template
+            <Wand2 className="size-3.5" /> 试试示例
           </Button>
         </div>
 
         <div className="mt-5 space-y-3">
-          <Field label="Post link" optional>
+          <Field label="笔记链接" optional>
             <div className="relative">
               <Link2 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -147,26 +147,26 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
             </div>
           </Field>
 
-          <Field label="Post title" optional>
+          <Field label="笔记标题" optional>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="The headline that caught your eye"
+              placeholder="让你停下来的那个标题"
               className="h-11 rounded-xl"
             />
           </Field>
 
-          <Field label="Pasted post content" optional>
+          <Field label="粘贴笔记正文" optional>
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Paste the body of the note…"
+              placeholder="把笔记正文粘贴进来…"
               rows={4}
               className="resize-none rounded-xl"
             />
           </Field>
 
-          <Field label="Observation lens" required>
+          <Field label="观察视角" required>
             <div className="flex flex-wrap gap-1.5">
               {LENSES.map((l) => {
                 const active = lens === l.id;
@@ -194,11 +194,11 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
             )}
           </Field>
 
-          <Field label="Your one-sentence read" required>
+          <Field label="你的一句话判断" required>
             <Textarea
               value={observation}
               onChange={(e) => setObservation(e.target.value)}
-              placeholder="What did you actually notice? One honest sentence."
+              placeholder="你到底注意到了什么？一句话说清楚。"
               rows={2}
               className="resize-none rounded-xl bg-surface-soft"
             />
@@ -207,12 +207,12 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
           <div className="flex items-center justify-between gap-3 pt-1">
             <div className="text-xs text-muted-foreground">
               {!hasPost
-                ? "Add a link, title, or paste content to begin."
+                ? "贴个链接、标题或正文，就可以开始了。"
                 : !lens
-                  ? "Pick the lens you're using to read this."
+                  ? "挑一个你用来读它的视角。"
                   : !observation.trim()
-                    ? "Add your one-sentence read."
-                    : "Ready when you are."}
+                    ? "写一句你的判断。"
+                    : "随时可以开始。"}
             </div>
             <Button
               type="button"
@@ -221,7 +221,7 @@ export function Workspace({ entriesCount, style, onSaved }: Props) {
               onClick={analyze}
               className="h-11 gap-2 rounded-xl bg-gradient-primary px-5 shadow-glow"
             >
-              <Sparkles className="size-4" /> Analyze with Lumi
+              <Sparkles className="size-4" /> 让 Lumi 解读
             </Button>
           </div>
         </div>
@@ -256,10 +256,10 @@ function Field({
           {label}
         </label>
         {optional && (
-          <span className="text-[10px] text-muted-foreground/70">optional</span>
+          <span className="text-[10px] text-muted-foreground/70">选填</span>
         )}
         {required && (
-          <span className="text-[10px] font-medium text-primary">required</span>
+          <span className="text-[10px] font-medium text-primary">必填</span>
         )}
       </div>
       {children}
