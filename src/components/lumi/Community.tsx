@@ -13,25 +13,8 @@ import { PatternCard } from "./PatternCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
-const recentPatterns = [
-  {
-    id: "restrained-seeding",
-    lensLabel: "商业化痕迹",
-    title: "克制型种草正在跑赢硬广",
-    summary:
-      "5 位观察者本周记录到：高赞内容用「不种草」开场反而提升了转化点击。",
-    count: 5,
-  },
-  {
-    id: "neighborhood-citywalk",
-    lensLabel: "趋势变化",
-    title: "城市漫步在向街区级颗粒度下沉",
-    summary:
-      "趋势雷达板块里，3 位观察者独立提到「街区名」开始替代「城市名」成为搜索锚点。",
-    count: 3,
-  },
-];
+import { getAllPatterns } from "@/lib/lumi/patterns";
+import { getCopy } from "@/lib/lumi/copy";
 
 interface Props {
   companion: Companion;
@@ -327,7 +310,8 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
     );
   }
 
-  const showPatterns = entries.length > 0;
+  const allPatterns = getAllPatterns(entries);
+  const copy = getCopy(companion.style);
 
   return (
     <div className="flex h-full flex-col">
@@ -342,35 +326,34 @@ export function Community({ companion, entries, myBoardPosts, onPost }: Props) {
         </div>
       </div>
 
-      {/* Recent patterns — quiet, top-of-mind */}
-      {showPatterns && (
-        <div className="mb-4">
-          <div className="mb-1.5 flex items-baseline justify-between">
-            <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
-              最近的规律
-            </span>
-            <span className="text-[10px] text-muted-foreground/70">
-              本周浮现
-            </span>
-          </div>
-          <div className="space-y-2">
-            {recentPatterns.map((p) => (
-              <PatternCard
-                key={p.id}
-                id={p.id}
-                variant="compact"
-                label="来自社区"
-                lensLabel={p.lensLabel}
-                title={p.title}
-                summary={p.summary}
-                evidence={[]}
-                count={p.count}
-                ctaLabel="查看相关记录 →"
-              />
-            ))}
-          </div>
+      {/* Pattern cards — preset + auto-generated from user entries */}
+      <div className="mb-4">
+        <div className="mb-1.5 flex items-baseline justify-between">
+          <span className="text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
+            发现的规律
+          </span>
+          <span className="text-[10px] text-muted-foreground/70">
+            {allPatterns.length} 张模式卡
+          </span>
         </div>
-      )}
+        <div className="space-y-3">
+          {allPatterns.map((p) => (
+            <PatternCard
+              key={p.id}
+              id={p.id}
+              variant="featured"
+              label={p.isPreset ? "本周精选" : "发现规律"}
+              lensLabel={copy.lensLabel[p.lensId]}
+              title={p.title}
+              summary={p.summary}
+              evidence={p.evidence}
+              count={p.count}
+              ctaLabel="查看相关记录 →"
+            />
+          ))}
+        </div>
+      </div>
+
 
       {/* Featured leaderboard — demoted to small panel */}
       <div className="rounded-2xl border border-border/70 bg-surface/50 p-3">

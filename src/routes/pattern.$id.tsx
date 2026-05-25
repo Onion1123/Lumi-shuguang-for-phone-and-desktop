@@ -16,7 +16,7 @@ export const Route = createFileRoute("/pattern/$id")({
 function PatternDetail() {
   const { id } = useParams({ from: "/pattern/$id" });
   const { entries, companion } = useLumi();
-  const pattern = getPattern(id);
+  const pattern = getPattern(id, entries);
   const copy = getCopy(companion?.style);
 
   if (!pattern) {
